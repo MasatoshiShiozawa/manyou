@@ -31,8 +31,8 @@
 `$ git init`
 
 ４．コミットする  
-    $ git add -A;
-    $ git commit -m "1102万葉Herokuアップ";
+`$ git add -A`
+`$ git commit -m "1102万葉Herokuアップ"`
 
 ５．Herokuアプリを作成  
 `$ heroku create`
