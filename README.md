@@ -1,5 +1,4 @@
 ## DB情報
----
 # Task
   |column|data|
   |:--|--:|
@@ -22,25 +21,24 @@
   |password_digest|string|
 
 ## Herokuへのデプロイ手順
----
-１．送りたいディレクトリに移動
+１．送りたいディレクトリに移動  
 `vagrant@ubuntu-xenial:~/workspace$ cd manyou`
 
-２．送りたいブランチに移動
+２．送りたいブランチに移動  
 `$ git checkout master`
 
-３．リポジトリを初期化
+３．リポジトリを初期化  
 `$ git init`
 
-４．コミットする
+４．コミットする  
     $ git add -A;
     $ git commit -m "1102万葉Herokuアップ";
 
-５．Herokuアプリを作成
+５．Herokuアプリを作成  
 `$ heroku create`
 
-６．デプロイ
+６．デプロイ  
 `$ git push heroku master`
 
-７．DB移行
+７．DB移行  
 `$ heroku run rails db:migrate`
