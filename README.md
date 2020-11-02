@@ -18,3 +18,5 @@
   |name|string|
   |email|string|
   |password_digest|string|
+
+* Herokuへのデプロイ手順

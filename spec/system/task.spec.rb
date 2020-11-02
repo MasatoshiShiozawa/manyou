@@ -6,7 +6,7 @@ describe 'タスク管理機能', type: :system do
         visit new_task_path
         fill_in 'Title', with: 'task_title'
         fill_in 'Content', with: 'task_content'
-        click_button 'Create Task'
+        click_button '登録する'
         visit tasks_path
         expect(page).to have_content 'task'
       end
@@ -15,14 +15,19 @@ describe 'タスク管理機能', type: :system do
   describe '一覧表示機能' do
     context '一覧画面に遷移した場合' do
       it '作成済みのタスク一覧が表示される' do
-        # テストで使用するためのタスクを作成
         task = FactoryBot.create(:task, title: 'task')
-        # タスク一覧ページに遷移
         visit tasks_path
-        # visitした（遷移した）page（タスク一覧ページ）に「task」という文字列が
-        # have_contentされているか（含まれているか）ということをexpectする（確認・期待する）
         expect(page).to have_content 'task'
-        # expectの結果が true ならテスト成功、false なら失敗として結果が出力される
+      end
+    end
+    context 'タスクが作成日時の降順に並んでいる場合' do
+      it '降順に表示される' do
+        # ここに実装する
+        Task.create(title: '1', content: 'context1')
+        Task.create(title: '2', content: 'context2')
+        Task.create(title: '3', content: 'context3')
+        visit tasks_path
+        expect(Task.order("created_at DESC").map(&:title)).to eq ["3", "2", "1"]
       end
     end
   end
