@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Manyou1020</title>
+    <title>タスク管理</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gnavi">
+        <span class="sr-only">タスク管理</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">タスク管理</a>
+    </div>
+    <div id="gnavi" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><%= link_to 'TOP（タスク一覧）', root_path %></li>
+        <li><%= link_to '新規登録', new_task_path %></li>
+      </ul>
+    </div>
+  </div>
+  </nav>
   <body>
+
     <%= yield %>
   </body>
+  <footer>
+    <br>
+    <br>
+    <p>タスク管理株式会社</p>
+    <p>© 2020 TASK CONTROLL Corp.</p>
+  </footer>
 </html>

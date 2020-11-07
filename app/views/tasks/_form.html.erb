@@ -14,6 +14,12 @@
   <%= form.text_field :title  %>
   <%= form.label :content %>
   <%= form.text_area :content, :size=>"100x5"  %>
+  <%= form.label :deadline %>
+  <%= form.date_field :deadline %>
+  <%= form.label :status %>
+  <%= form.select :status, Task.statuses.keys.map {|k| [t("enums.tasks.status.#{k}"), k]}, include_blank: "選択して下さい" %>
+  <%= form.label :priority %>
+  <%= form.select :priority, Task.priorities.keys.map {|k| [t("enums.tasks.priority.#{k}"), k]}, include_blank: "選択して下さい" %>
   <div class="actions">
     <%= form.submit %>
   </div>

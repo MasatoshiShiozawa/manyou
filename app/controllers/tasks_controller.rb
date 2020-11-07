@@ -1,10 +1,38 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  PER = 10
 
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all.order(created_at: "DESC")
+    if params[:sort_expired]
+      @tasks = Task.page(params[:page]).per(PER)
+      @tasks = @tasks.order(deadline: :desc)
+    else
+      @tasks = Task.page(params[:page]).per(PER)
+      @tasks = @tasks.order(created_at: :desc)
+    end
+
+    if params[:sort_priority_high]
+      @tasks = Task.page(params[:page]).per(PER)
+      @tasks = @tasks.order(priority: :desc)
+    end
+
+    if params[:task].present?
+      if params[:task][:title].present? && params[:task][:status].present?
+        #両方title and statusが成り立つ検索結果を返す
+        @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
+        @tasks = @tasks.where(status: params[:task][:status])
+
+        #渡されたパラメータがtask titleのみだったとき
+      elsif params[:task][:title].present?
+        @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
+
+        #渡されたパラメータがステータスのみだったとき
+      elsif params[:task][:status].present?
+        @tasks = @tasks.where(status: params[:task][:status])
+      end
+    end
   end
 
   # GET /tasks/1
@@ -63,12 +91,11 @@ class TasksController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
-
+  def set_task
+    @task = Task.find(params[:id])
+  end
     # Only allow a list of trusted parameters through.
-    def task_params
-      params.require(:task).permit(:title, :content)
-    end
+  def task_params
+    params.require(:task).permit(:title, :content, :deadline, :status, :priority)
+  end
 end

@@ -2,11 +2,24 @@
 
 <h1>タスク一覧</h1>
 
+タスク検索<%= form_with(model: Task.new, method: :get, local: true, url: tasks_path) do |form| %>
+<%= form.text_field :title %>
+ステータス検索
+<%= form.select :status, [["未着手", "0"], ["進行中", "1"], ["完了", "2"]], include_blank: "選択して下さい" %>
+<%= form.submit '検索', title: nil %>
+<% end %>
+
+<button class="btn btn-primary" type="button"><%= link_to '新規登録', new_task_path %></button><br>
+<%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %>　　　<%= link_to "優先度高い順でソート", tasks_path(sort_priority_high: "true") %><br><br><br>
+
 <table>
   <thead>
     <tr>
       <th>タスク名</th>
       <th>作成日時</th>
+      <th>終了期限</th>
+      <th>ステータス</th>
+      <th>優先順位</th>
     </tr>
   </thead>
 
@@ -15,14 +28,16 @@
       <tr>
         <td><%= task.title %></td>
         <td><%= task.created_at %></td>
-        <td><%= link_to 'Show', task %></td>
-        <td><%= link_to 'Edit', edit_task_path(task) %></td>
-        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= task.deadline %></td>
+        <td><%= task.status %></td>
+        <td><%= task.priority %></td>
+        <td><button type="button" class="btn btn-warning btn-sm"><%= link_to '詳細', task %></button></td>
+        <td><button type="button" class="btn btn-warning btn-sm"><%= link_to '編集', edit_task_path(task) %></button></td>
+        <td><button type="button" class="btn btn-danger btn-sm"><%= link_to '削除', task, method: :delete, data: { confirm: '削除していいですか?' } %></button></td>
       </tr>
     <% end %>
+    <%= paginate @tasks %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Task', new_task_path %>
