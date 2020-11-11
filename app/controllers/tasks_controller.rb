@@ -1,35 +1,43 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :login_require
   PER = 10
 
   # GET /tasks
   # GET /tasks.json
   def index
+    @tasks = current_user.tasks
+    @tasks = Task.page(params[:page]).per(PER)
+    @tasks = @tasks.order(created_at: :desc)
+
     if params[:sort_expired]
+      @tasks = current_user.tasks
       @tasks = Task.page(params[:page]).per(PER)
       @tasks = @tasks.order(deadline: :desc)
     else
+      @tasks = current_user.tasks
       @tasks = Task.page(params[:page]).per(PER)
       @tasks = @tasks.order(created_at: :desc)
     end
 
     if params[:sort_priority_high]
+      @tasks = current_user.tasks
       @tasks = Task.page(params[:page]).per(PER)
       @tasks = @tasks.order(priority: :desc)
     end
 
     if params[:task].present?
       if params[:task][:title].present? && params[:task][:status].present?
-        #両方title and statusが成り立つ検索結果を返す
+        @tasks = current_user.tasks
         @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
         @tasks = @tasks.where(status: params[:task][:status])
 
-        #渡されたパラメータがtask titleのみだったとき
       elsif params[:task][:title].present?
+        @tasks = current_user.tasks
         @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
 
-        #渡されたパラメータがステータスのみだったとき
       elsif params[:task][:status].present?
+        @tasks = current_user.tasks
         @tasks = @tasks.where(status: params[:task][:status])
       end
     end
@@ -98,4 +106,9 @@ class TasksController < ApplicationController
   def task_params
     params.require(:task).permit(:title, :content, :deadline, :status, :priority)
   end
+
+  def login_require
+    redirect_to new_session_path unless current_user
+  end
+
 end
