@@ -6,38 +6,41 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = current_user.tasks
-    @tasks = Task.page(params[:page]).per(PER)
+    @user = current_user
+    @tasks = @user.tasks&.page(params[:page]).per(PER)
     @tasks = @tasks.order(created_at: :desc)
 
     if params[:sort_expired]
-      @tasks = current_user.tasks
-      @tasks = Task.page(params[:page]).per(PER)
+      @user = current_user
+      @tasks = @user.tasks&.page(params[:page]).per(PER)
       @tasks = @tasks.order(deadline: :desc)
     else
-      @tasks = current_user.tasks
-      @tasks = Task.page(params[:page]).per(PER)
+      @user = current_user
+      @tasks = @user.tasks&.page(params[:page]).per(PER)
       @tasks = @tasks.order(created_at: :desc)
     end
 
     if params[:sort_priority_high]
-      @tasks = current_user.tasks
-      @tasks = Task.page(params[:page]).per(PER)
+      @user = current_user
+      @tasks = @user.tasks&.page(params[:page]).per(PER)
       @tasks = @tasks.order(priority: :desc)
     end
 
     if params[:task].present?
       if params[:task][:title].present? && params[:task][:status].present?
-        @tasks = current_user.tasks
+        @user = current_user
+        @tasks = @user.tasks
         @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
         @tasks = @tasks.where(status: params[:task][:status])
 
       elsif params[:task][:title].present?
-        @tasks = current_user.tasks
+        @user = current_user
+        @tasks = @user.tasks
         @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
 
       elsif params[:task][:status].present?
-        @tasks = current_user.tasks
+        @user = current_user
+        @tasks = @user.tasks
         @tasks = @tasks.where(status: params[:task][:status])
       end
     end
@@ -60,16 +63,11 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(task_params)
-
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
-        format.json { render :show, status: :created, location: @task }
-      else
-        format.html { render :new }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    @task = current_user.tasks.build(task_params)
+    if @task.save
+      redirect_to tasks_path, notice: "作成しました！"
+    else
+      render :new
     end
   end
 
