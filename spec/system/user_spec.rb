@@ -10,12 +10,12 @@ RSpec.describe 'ユーザ登録・ログイン・ログアウト機能・管理�
     context 'ユーザ新規登録' do
       it '自身の名が入ったページへアクセスできる' do
         visit new_user_path
-        fill_in 'user_name', with: 'suzuki_test02'
-        fill_in 'user_email', with: 'suzuki_test02@example.com'
+        fill_in 'user_name', with: 'suzuki_test111'
+        fill_in 'user_email', with: 'suzuki_test111@example.com'
         fill_in 'user_password', with: 'suzuki'
         fill_in 'user_password_confirmation', with: 'suzuki'
         click_on 'アカウントを登録する'
-        expect(page).to have_content 'suzuki_test02のマイページ'
+        expect(page).to have_content 'suzuki_test111のマイページ'
       end
     end
 

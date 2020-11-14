@@ -3,8 +3,8 @@ describe 'タスク管理機能', type: :system do
 
   before do
     visit new_user_path
-    fill_in 'user_name', with: 'suzuki_test02'
-    fill_in 'user_email', with: 'suzuki_test02@example.com'
+    fill_in 'user_name', with: 'suzuki_test121'
+    fill_in 'user_email', with: 'suzuki_test121@example.com'
     fill_in 'user_password', with: 'suzuki'
     fill_in 'user_password_confirmation', with: 'suzuki'
     click_on 'アカウントを登録する'
