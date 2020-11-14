@@ -6,41 +6,29 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @user = current_user
-    @tasks = @user.tasks&.page(params[:page]).per(PER)
+    @tasks = current_user.tasks&.page(params[:page]).per(PER)
     @tasks = @tasks.order(created_at: :desc)
 
     if params[:sort_expired]
-      @user = current_user
-      @tasks = @user.tasks&.page(params[:page]).per(PER)
-      @tasks = @tasks.order(deadline: :desc)
-    else
-      @user = current_user
-      @tasks = @user.tasks&.page(params[:page]).per(PER)
+      @tasks = current_user.tasks&.page(params[:page]).per(PER)
       @tasks = @tasks.order(created_at: :desc)
     end
 
     if params[:sort_priority_high]
-      @user = current_user
-      @tasks = @user.tasks&.page(params[:page]).per(PER)
+      @tasks = current_user.tasks&.page(params[:page]).per(PER)
       @tasks = @tasks.order(priority: :desc)
     end
 
     if params[:task].present?
+      @tasks = current_user.tasks
       if params[:task][:title].present? && params[:task][:status].present?
-        @user = current_user
-        @tasks = @user.tasks
         @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
         @tasks = @tasks.where(status: params[:task][:status])
 
       elsif params[:task][:title].present?
-        @user = current_user
-        @tasks = @user.tasks
         @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
 
       elsif params[:task][:status].present?
-        @user = current_user
-        @tasks = @user.tasks
         @tasks = @tasks.where(status: params[:task][:status])
       end
     end
