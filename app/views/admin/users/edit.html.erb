@@ -1,0 +1,8 @@
+<h2><%= @user.name %>のページ編集</h2>
+<br>
+<%= render 'form', user: @user %>
+
+<br>
+<br>
+<%= link_to "マイページに戻る", user_path(current_user.id) %>
+<%= link_to "管理画面に戻る", admin_users_path %>

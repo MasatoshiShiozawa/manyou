@@ -13,13 +13,23 @@
         <span class="sr-only">タスク管理</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand">タスク管理</a>
     </div>
     <div id="gnavi" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><%= link_to 'TOP（タスク一覧）', root_path %></li>
-        <li><%= link_to '新規登録', new_task_path %></li>
+        <% if logged_in? %>
+          <li><%= link_to '管理画面', admin_users_path %></li>
+          <li><%= link_to 'タスク一覧', tasks_path %></li>
+          <li><%= link_to "マイページ", user_path(current_user.id) %></li>
+          <li><%= link_to "ログアウト", session_path(current_user.id), method: :delete %></li>
+        <% else %>
+          <li><%= link_to 'TOP', tasks_path %></li>
+          <li><%= link_to "ログイン", new_session_path %></li>
+          <li><%= link_to "会員登録", new_user_path %></li>
+        <% end %>
       </ul>
     </div>
   </div>

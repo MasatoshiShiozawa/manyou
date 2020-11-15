@@ -36,4 +36,8 @@ group :test do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'bcrypt', '~> 3.1.11'
 gem 'rb-readline'
+gem 'faker'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'

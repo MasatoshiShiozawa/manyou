@@ -1,34 +1,33 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :login_require
   PER = 10
 
   # GET /tasks
   # GET /tasks.json
   def index
+    @tasks = current_user.tasks&.page(params[:page]).per(PER)
+    @tasks = @tasks.order(created_at: :desc)
+
     if params[:sort_expired]
-      @tasks = Task.page(params[:page]).per(PER)
-      @tasks = @tasks.order(deadline: :desc)
-    else
-      @tasks = Task.page(params[:page]).per(PER)
+      @tasks = current_user.tasks&.page(params[:page]).per(PER)
       @tasks = @tasks.order(created_at: :desc)
     end
 
     if params[:sort_priority_high]
-      @tasks = Task.page(params[:page]).per(PER)
+      @tasks = current_user.tasks&.page(params[:page]).per(PER)
       @tasks = @tasks.order(priority: :desc)
     end
 
     if params[:task].present?
+      @tasks = current_user.tasks
       if params[:task][:title].present? && params[:task][:status].present?
-        #両方title and statusが成り立つ検索結果を返す
         @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
         @tasks = @tasks.where(status: params[:task][:status])
 
-        #渡されたパラメータがtask titleのみだったとき
       elsif params[:task][:title].present?
         @tasks = @tasks.where('title LIKE ?', "%#{params[:task][:title]}%")
 
-        #渡されたパラメータがステータスのみだったとき
       elsif params[:task][:status].present?
         @tasks = @tasks.where(status: params[:task][:status])
       end
@@ -52,16 +51,11 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(task_params)
-
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
-        format.json { render :show, status: :created, location: @task }
-      else
-        format.html { render :new }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    @task = current_user.tasks.build(task_params)
+    if @task.save
+      redirect_to tasks_path, notice: "作成しました！"
+    else
+      render :new
     end
   end
 
@@ -98,4 +92,9 @@ class TasksController < ApplicationController
   def task_params
     params.require(:task).permit(:title, :content, :deadline, :status, :priority)
   end
+
+  def login_require
+    redirect_to new_session_path unless current_user
+  end
+
 end
