@@ -70,5 +70,5 @@
               deadline: deadline,
               status: rand(0..2),
               priority: rand(0..2),
-              user_id: rand(1..20))
+              user_id: rand(1..10))
 end
