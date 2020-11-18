@@ -1,64 +1,64 @@
-# 2.times do |n|
-#   name = Faker::Games::Pokemon.name
-#   email = Faker::Internet.email
-#   password = "suzuki"
-#   User.create!(name: name,
-#                email: email,
-#                password: password,
-#                password_confirmation: password,
-#                admin: true)
-# end
-#
-# 8.times do |n|
-#   name = Faker::Games::Pokemon.name
-#   email = Faker::Internet.email
-#   password = "suzuki"
-#   User.create!(name: name,
-#                email: email,
-#                password: password,
-#                password_confirmation: password,
-#                admin: false)
-# end
-#
-# Label.create!(
-#   name: 'あ'
-# )
-#
-# Label.create!(
-#   name: 'い'
-# )
-#
-# Label.create!(
-#   name: 'う'
-# )
-#
-# Label.create!(
-#   name: 'え'
-# )
-#
-# Label.create!(
-#   name: 'お'
-# )
-#
-# Label.create!(
-#   name: 'か'
-# )
-#
-# Label.create!(
-#   name: 'き'
-# )
-#
-# Label.create!(
-#   name: 'く'
-# )
-#
-# Label.create!(
-#   name: 'け'
-# )
-#
-# Label.create!(
-#   name: 'こ'
-# )
+2.times do |n|
+  name = Faker::Games::Pokemon.name
+  email = Faker::Internet.email
+  password = "suzuki"
+  User.create!(name: name,
+               email: email,
+               password: password,
+               password_confirmation: password,
+               admin: true)
+end
+
+8.times do |n|
+  name = Faker::Games::Pokemon.name
+  email = Faker::Internet.email
+  password = "suzuki"
+  User.create!(name: name,
+               email: email,
+               password: password,
+               password_confirmation: password,
+               admin: false)
+end
+
+Label.create!(
+  name: 'あ'
+)
+
+Label.create!(
+  name: 'い'
+)
+
+Label.create!(
+  name: 'う'
+)
+
+Label.create!(
+  name: 'え'
+)
+
+Label.create!(
+  name: 'お'
+)
+
+Label.create!(
+  name: 'か'
+)
+
+Label.create!(
+  name: 'き'
+)
+
+Label.create!(
+  name: 'く'
+)
+
+Label.create!(
+  name: 'け'
+)
+
+Label.create!(
+  name: 'こ'
+)
 
 50.times do |n|
   title = Faker::Games::Pokemon.name
