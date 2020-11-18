@@ -30,6 +30,10 @@ class TasksController < ApplicationController
 
       elsif params[:task][:status].present?
         @tasks = @tasks.where(status: params[:task][:status])
+
+      elsif params[:task][:label_id].present?
+        @tasklabel = Tasklabel.where(label_id: params[:task][:label_id]).pluck(:task_id)
+        @tasks = @tasks.where(id: @tasklabel)
       end
     end
   end
@@ -90,11 +94,10 @@ class TasksController < ApplicationController
   end
     # Only allow a list of trusted parameters through.
   def task_params
-    params.require(:task).permit(:title, :content, :deadline, :status, :priority)
+    params.require(:task).permit(:title, :content, :deadline, :status, :priority, { label_ids: [] })
   end
 
   def login_require
     redirect_to new_session_path unless current_user
   end
-
 end

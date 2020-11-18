@@ -4,8 +4,12 @@
 
 タスク検索<%= form_with(model: Task.new, method: :get, local: true, url: tasks_path) do |form| %>
 <%= form.text_field :title %>
+
 ステータス検索
 <%= form.select :status, [["未着手", "0"], ["進行中", "1"], ["完了", "2"]], include_blank: "選択して下さい" %>
+
+ラベル検索<%= form.select("label_id", Label.all.pluck(:name, :id), { include_blank: true }) %>
+
 <%= form.submit '検索', title: nil %>
 <% end %>
 
@@ -21,6 +25,7 @@
       <th>作成者</th>
       <th>ステータス</th>
       <th>優先順位</th>
+      <th>ラベル</th>
     </tr>
   </thead>
 
@@ -33,6 +38,11 @@
         <td><%= task.user.name %></td>
         <td><%= task.status %></td>
         <td><%= task.priority %></td>
+        <td>
+          <% task.labels.each do |label| %>
+            <%= label.name %>
+            <% end %>
+        </td>
         <td><button type="button" class="btn btn-warning btn-sm"><%= link_to '詳細', task %></button></td>
         <td><button type="button" class="btn btn-warning btn-sm"><%= link_to '編集', edit_task_path(task) %></button></td>
         <td><button type="button" class="btn btn-danger btn-sm"><%= link_to '削除', task, method: :delete, data: { confirm: '削除していいですか?' } %></button></td>

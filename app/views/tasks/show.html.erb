@@ -4,5 +4,10 @@
 <p>期限： <%= @task.deadline %></p>
 <p>ステータス： <%= @task.status %></p>
 <p>重要度: <%= @task.priority %></p>
+<p>ラベル:     <td>
+      <% @task.labels.each do | label | %>
+        <%= label.name %>
+      <% end %>
+    </td></p>
 <%= link_to 'Edit', edit_task_path(@task) %> |
 <%= link_to 'Back', tasks_path %>
